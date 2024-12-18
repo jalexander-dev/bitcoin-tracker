@@ -6,10 +6,10 @@ import CryptoBooksSection from '@/components/CryptoBooksSection';
 import { useEffect, useState } from 'react';
 
 interface BitcoinData {
-  current_price: number;
-  market_cap: number;
-  total_volume: number;
-  price_change_percentage_24h: number;
+  current_price: number | undefined;
+  market_cap: number | undefined;
+  total_volume: number | undefined;
+  price_change_percentage_24h: number | undefined;
 }
 
 export default function Home() {
@@ -31,15 +31,11 @@ export default function Home() {
 
         const data = await response.json();
         
-        if (!data.bitcoin || !data.bitcoin.usd) {
-          throw new Error('Invalid data format received');
-        }
-
         setBitcoinData({
-          current_price: data.bitcoin.usd,
-          market_cap: data.bitcoin.usd_market_cap,
-          total_volume: data.bitcoin.usd_24h_vol,
-          price_change_percentage_24h: data.bitcoin.usd_24h_change
+          current_price: data.bitcoin?.usd,
+          market_cap: data.bitcoin?.usd_market_cap,
+          total_volume: data.bitcoin?.usd_24h_vol,
+          price_change_percentage_24h: data.bitcoin?.usd_24h_change
         });
       } catch (error) {
         console.error('Error fetching Bitcoin data:', error);
@@ -53,6 +49,11 @@ export default function Home() {
     const interval = setInterval(fetchBitcoinData, 60000);
     return () => clearInterval(interval);
   }, []);
+
+  const getPriceChangeColor = (change: number | undefined) => {
+    if (change === undefined) return 'text-gray-500';
+    return change >= 0 ? 'text-green-500' : 'text-red-500';
+  };
 
   return (
     <main className="min-h-screen bg-gradient-to-r from-orange-500 to-amber-400">
@@ -84,11 +85,13 @@ export default function Home() {
             <div className="flex items-center justify-between">
               <h2 className="text-3xl font-bold">
                 {isLoading ? 'Loading...' : 
-                  bitcoinData ? `$${bitcoinData.current_price.toLocaleString()}` : 'N/A'}
+                  bitcoinData?.current_price ? `$${bitcoinData.current_price.toLocaleString()}` : 'N/A'}
               </h2>
-              <span className={`${bitcoinData?.price_change_percentage_24h >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+              <span className={getPriceChangeColor(bitcoinData?.price_change_percentage_24h)}>
                 {isLoading ? 'Loading...' :
-                  bitcoinData ? `${bitcoinData.price_change_percentage_24h.toFixed(2)}%` : 'N/A'}
+                  bitcoinData?.price_change_percentage_24h !== undefined 
+                    ? `${bitcoinData.price_change_percentage_24h.toFixed(2)}%` 
+                    : 'N/A'}
               </span>
             </div>
           </div>
@@ -107,7 +110,9 @@ export default function Home() {
               </div>
               <p className="text-2xl font-bold">
                 {isLoading ? 'Loading...' :
-                  bitcoinData ? `$${(bitcoinData.market_cap / 1e9).toFixed(2)}B` : 'N/A'}
+                  bitcoinData?.market_cap 
+                    ? `$${(bitcoinData.market_cap / 1e9).toFixed(2)}B` 
+                    : 'N/A'}
               </p>
             </div>
             <div className="bg-white rounded-lg p-6 shadow-lg">
@@ -116,7 +121,9 @@ export default function Home() {
               </div>
               <p className="text-2xl font-bold">
                 {isLoading ? 'Loading...' :
-                  bitcoinData ? `$${(bitcoinData.total_volume / 1e9).toFixed(2)}B` : 'N/A'}
+                  bitcoinData?.total_volume 
+                    ? `$${(bitcoinData.total_volume / 1e9).toFixed(2)}B` 
+                    : 'N/A'}
               </p>
             </div>
           </div>
