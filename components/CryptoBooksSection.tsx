@@ -2,8 +2,17 @@
 
 import React from 'react';
 
+interface Book {
+  title: string;
+  author: string;
+  description: string;
+  price: string;
+  affiliateLink: string;
+  imageUrl: string;
+}
+
 const CryptoBooksSection = () => {
-  const books = [
+  const books: Book[] = [
     {
       title: "How to Leave Introduction to Blockchain Technology",
       author: "Tiana Laurence",
@@ -13,12 +22,11 @@ const CryptoBooksSection = () => {
       imageUrl: "/book1.jpg"
     },
     {
-      title: "Blockchain For Dummies",
-      author: "Tiana Laurence",
-      description: "Cryptocurrency, NFTs, smart contracts, and ever-more-important business and finance functions―they all run on blockchain. Blockchain For Dummies is the must-have guide to the basics of blockchain",
+      title: "Bitcoin and Cryptocurrency Technologies",
+      author: "Arvind Narayanan",
+      description: "A comprehensive introduction to the technology behind Bitcoin and cryptocurrencies",
       price: "$19.99",
-      affiliateLink: "https://amzn.to/4iBA0aL",
-      // Make sure the filename matches exactly what's in your public folder
+      affiliateLink: "https://amzn.to/3OZmccE",
       imageUrl: "/book2.jpg"
     },
     {
@@ -27,14 +35,13 @@ const CryptoBooksSection = () => {
       description: "Learn the basics of Bitcoin, how to get started, and navigate the cryptocurrency world with confidence.",
       price: "$16.99",
       affiliateLink: "https://amzn.to/3ZFp57d",
-      // Make sure the filename matches exactly what's in your public folder
       imageUrl: "/book3.jpg"
     }
   ];
 
-  const handleImageError = (e) => {
-    console.error('Image failed to load:', e.target.src);
-    e.target.src = '/placeholder.jpg'; // You can add a placeholder image
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    console.error('Image failed to load:', e.currentTarget.src);
+    e.currentTarget.src = '/placeholder.jpg';
   };
 
   return React.createElement('div', { className: 'mt-8' },

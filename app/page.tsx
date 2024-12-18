@@ -1,6 +1,6 @@
-import CryptoBooksSection from '@/components/CryptoBooksSection';
 import { Bitcoin, Sparkles } from 'lucide-react';
 import BitcoinChart from '@/components/BitcoinChart';
+import CryptoBooksSection from '@/components/CryptoBooksSection';
 
 export default function Home() {
   return (
@@ -9,7 +9,7 @@ export default function Home() {
         <header className="py-4 flex justify-between items-center">
           <div className="flex items-center text-white">
             <Bitcoin className="mr-2" />
-            <h1 className="text-2xl font-bold">BitJay's Bitcoin Tracker</h1>
+            <h1 className="text-2xl font-bold">BitJay&apos;s Bitcoin Tracker</h1>
           </div>
           <div className="bg-amber-100 text-amber-800 px-4 py-2 rounded-lg flex items-center">
             <Sparkles className="mr-2 h-4 w-4" />
